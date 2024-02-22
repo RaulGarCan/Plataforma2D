@@ -4,7 +4,8 @@ using System.Threading;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour {
+public class JohnMovement : MonoBehaviour
+{
     private float LastShoot;
     private Rigidbody2D Rigidbody2D;
     public float Speed;
@@ -13,14 +14,18 @@ public class NewBehaviourScript : MonoBehaviour {
     private float horizontal;
     private bool Grounded;
     public GameObject prefabBullet;
-    
+    public int Health;
 
     // Start is called before the first frame update
     void Start()
     {
+        if(Health==0){
+            Health = 5;
+        }
         Rigidbody2D = GetComponent<Rigidbody2D>();
         Animator = GetComponent<Animator>();
     }
+
     void Update()
     {
         Debug.DrawRay(transform.position, Vector3.down * 0.1f, Color.red);
@@ -29,18 +34,23 @@ public class NewBehaviourScript : MonoBehaviour {
         // almacena 0 si no pulsamos nada
         // almacena 1 si pulsamos tecla d
 
-        Animator.SetBool("running",horizontal != 0.0f);
+        Animator.SetBool("running", horizontal != 0.0f);
 
-        if(horizontal < 0.0f) transform.localScale = new Vector3(-1.0f,1.0f,1.0f);
-        else if (horizontal > 0.0f) transform.localScale = new Vector3(1.0f,1.0f,1.0f);
+        if (horizontal < 0.0f)
+            transform.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
+        else if (horizontal > 0.0f)
+            transform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
 
-        if(Physics2D.Raycast(transform.position,Vector3.down, 0.1f)){
+        if (Physics2D.Raycast(transform.position, Vector3.down, 0.1f))
+        {
             Grounded = true;
         }
-        else {
+        else
+        {
             Grounded = false;
         }
-        if(Input.GetKeyDown(KeyCode.W) && Grounded){
+        if (Input.GetKeyDown(KeyCode.W) && Grounded)
+        {
             Jump();
         }
         //Deberá esperar un tiempo mayor para permitir disparar una segunda vez
@@ -48,28 +58,45 @@ public class NewBehaviourScript : MonoBehaviour {
         {
             Shoot();
             LastShoot = Time.time;
-
         }
     }
+
     void FixedUpdate()
     {
-        Rigidbody2D.velocity = new Vector2(horizontal,Rigidbody2D.velocity.y);
+        Rigidbody2D.velocity = new Vector2(horizontal, Rigidbody2D.velocity.y);
     }
-    private void Jump(){
+
+    private void Jump()
+    {
         Rigidbody2D.AddForce(Vector2.up * JumpForce);
     }
-    private void Shoot(){
+
+    private void Shoot()
+    {
         Vector3 direction;
 
-        if ( transform.localScale.x == 1.0f ) direction = Vector3.right;
-        else direction = Vector3.left;
+        if (transform.localScale.x == 1.0f)
+            direction = Vector3.right;
+        else
+            direction = Vector3.left;
 
-            // Pintamos el Prefab en scena, en la posición indicada y la rotación=0
-            // La posición se calcula: 
-            // transform.position -> centro de John
-            // direction *0.1f -> offset de desplazamiento
-            GameObject bullet = Instantiate(prefabBullet,transform.position + direction *0.1f, Quaternion.identity);
+        // Pintamos el Prefab en scena, en la posición indicada y la rotación=0
+        // La posición se calcula:
+        // transform.position -> centro de John
+        // direction *0.1f -> offset de desplazamiento
+        GameObject bullet = Instantiate(
+            prefabBullet,
+            transform.position + direction * 0.1f,
+            Quaternion.identity
+        );
 
         bullet.GetComponent<BulletScript>().SetDirection(direction);
+    }
+
+    public void Hit()
+    {
+        Health = Health - 1;
+        if (Health == 0)
+            Destroy(gameObject);
     }
 }
