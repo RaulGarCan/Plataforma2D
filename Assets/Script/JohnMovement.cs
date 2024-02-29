@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class JohnMovement : MonoBehaviour
@@ -103,9 +104,14 @@ public class JohnMovement : MonoBehaviour
         Health = Health - danio;
         BarraVida.fillAmount = Health / MaxHealth;
         if (Health <= 0)
+        {
             Destroy(gameObject);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
+        }
     }
-    public int getMaxHealth(){
+
+    public int getMaxHealth()
+    {
         return MaxHealth;
     }
 }
