@@ -122,7 +122,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 2
-  sonido: {fileID: 8300000, guid: 59ab083b1643ba349bb70565b6eae44e, type: 3}
+  SonidoDisparo: {fileID: 8300000, guid: 59ab083b1643ba349bb70565b6eae44e, type: 3}
+  SonidoDanioJohn: {fileID: 8300000, guid: 3390173d3a496134ebb71a375ea9fa19, type: 3}
 --- !u!50 &2383597165121980263
 Rigidbody2D:
   serializedVersion: 4

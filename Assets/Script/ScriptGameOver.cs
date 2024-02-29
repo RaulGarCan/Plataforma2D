@@ -18,6 +18,6 @@ public class ScriptGameOver : MonoBehaviour
     }
     public void Reintentar()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(0);
     }
 }

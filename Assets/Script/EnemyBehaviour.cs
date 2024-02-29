@@ -36,7 +36,7 @@ public class EnemyBehaviour : MonoBehaviour
         // Recordad hacer un Freeze Rotation del eje Z para que no rote
         // si la distancia es menor que 1 metro entonces permitimos al enemigo disparar
         // Le añadimos un delay tal como habíamos hecho con el disparo de John
-        if (distance < 1.0f && Time.time > LastShoot + 0.75f)
+        if (distance < 1.0f && Time.time > LastShoot + 1.25f)
         {
             Shoot();
             LastShoot = Time.time;

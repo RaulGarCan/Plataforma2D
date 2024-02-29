@@ -19,6 +19,8 @@ public class JohnMovement : MonoBehaviour
     public int MaxHealth;
     private float Health;
     public Image BarraVida;
+    private float deltaTime;
+    public AudioClip SonidoSalto;
 
     // Start is called before the first frame update
     void Start()
@@ -50,10 +52,14 @@ public class JohnMovement : MonoBehaviour
         if (Physics2D.Raycast(transform.position, Vector3.down, 0.1f))
         {
             Grounded = true;
+            deltaTime = Time.time;
         }
         else
         {
-            Grounded = false;
+            if (Time.time > deltaTime + 0.1f)
+            {
+                Grounded = false;
+            }
         }
         if (Input.GetKeyDown(KeyCode.W) && Grounded)
         {
@@ -75,6 +81,7 @@ public class JohnMovement : MonoBehaviour
     private void Jump()
     {
         Rigidbody2D.AddForce(Vector2.up * JumpForce);
+        Camera.main.GetComponent<AudioSource>().PlayOneShot(SonidoSalto);
     }
 
     private void Shoot()
@@ -106,7 +113,7 @@ public class JohnMovement : MonoBehaviour
         if (Health <= 0)
         {
             Destroy(gameObject);
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 2);
+            SceneManager.LoadScene(1);
         }
     }
 
