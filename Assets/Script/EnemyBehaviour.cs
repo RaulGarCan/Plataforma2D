@@ -54,10 +54,10 @@ public class EnemyBehaviour : MonoBehaviour
         bullet.GetComponent<BulletScript>().SetDirection(direction);
     }
 
-    public void Hit()
+    public void Hit(int danio)
     {
-        Health = Health - 1;
-        if (Health == 0)
+        Health = Health - danio;
+        if (Health <= 0)
             Destroy(gameObject);
     }
 }

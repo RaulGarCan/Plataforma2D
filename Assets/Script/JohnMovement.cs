@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class JohnMovement : MonoBehaviour
 {
@@ -14,14 +15,18 @@ public class JohnMovement : MonoBehaviour
     private float horizontal;
     private bool Grounded;
     public GameObject prefabBullet;
-    public int Health;
+    public int MaxHealth;
+    private float Health;
+    public Image BarraVida;
 
     // Start is called before the first frame update
     void Start()
     {
-        if(Health==0){
-            Health = 5;
+        if (MaxHealth == 0)
+        {
+            MaxHealth = 5;
         }
+        Health = MaxHealth;
         Rigidbody2D = GetComponent<Rigidbody2D>();
         Animator = GetComponent<Animator>();
     }
@@ -93,10 +98,14 @@ public class JohnMovement : MonoBehaviour
         bullet.GetComponent<BulletScript>().SetDirection(direction);
     }
 
-    public void Hit()
+    public void Hit(int danio)
     {
-        Health = Health - 1;
-        if (Health == 0)
+        Health = Health - danio;
+        BarraVida.fillAmount = Health / MaxHealth;
+        if (Health <= 0)
             Destroy(gameObject);
+    }
+    public int getMaxHealth(){
+        return MaxHealth;
     }
 }
